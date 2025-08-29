@@ -6,11 +6,11 @@ This is my pet project where I used NestJS + TypeORM + Postgressql + unit tests 
 * fix/fix-name
 
 ### Commit example 
-* feat(23/12/2023): implement some functionality
+* feat(23/12/2025): implement some functionality
 
 ## MR structure
-* Title: feat(23/12/2023): implement some functionality
+* Title: feat(23/12/2025): implement some functionality
 * Picture
 
 ### Best regard 
-Akzhan Sarzhanuly (23/12/2023)
+Akzhan Sarzhanuly (29/08/2025)
