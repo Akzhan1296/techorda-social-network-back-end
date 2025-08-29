@@ -18,7 +18,6 @@ import { PublicCommentsController } from "./features/roles/public/comments/api/p
 import { AppService } from "./app.service";
 import { AuthService } from "./features/roles/public/auth/application/auth.service";
 import { JwtService } from "@nestjs/jwt";
-import { BlockIpsService } from "./features/infrstructura/ip-retriction.service";
 
 //repository
 import {
@@ -55,7 +54,6 @@ import { LikeStatusPostUseCase } from "./features/roles/public/posts/application
 import { User } from "./features/entity/users-entity";
 import { Registration } from "./features/entity/registration-entity";
 import { AuthSession } from "./features/entity/auth-session-entity";
-import { Ips } from "./features/entity/ips-entity";
 import { Post } from "./features/entity/posts-entity";
 import { Comment } from "./features/entity/comments-entity";
 import { Blog } from "./features/entity/blogs-entity";
@@ -69,7 +67,6 @@ import { UsersRepo } from "./features/infrstructura/users/users.adapter";
 import { UsersQueryRepo } from "./features/infrstructura/users/users.query.adapter";
 import { DeviceSessionRepo } from "./features/infrstructura/deviceSessions/device-sessions.adapter";
 import { DeviceSessionQueryRepo } from "./features/infrstructura/deviceSessions/device-sessions.query.adapter";
-import { BlockIpsRepo } from "./features/infrstructura/ip/ip.adapter";
 import { PostsRepo } from "./features/infrstructura/posts/posts.adapter";
 import { PostsQueryRepo } from "./features/infrstructura/posts/posts.query.adapter";
 import { CommentsRepo } from "./features/infrstructura/comments/comments.adapter";
@@ -141,7 +138,6 @@ const commentsUseCases = [
       User,
       Registration,
       AuthSession,
-      Ips,
       Post,
       Comment,
       Blog,
@@ -164,7 +160,6 @@ const commentsUseCases = [
     JwtService,
     AppService,
     AuthService,
-    BlockIpsService,
     DeleteAllTestingData,
     BlogsRepo,
     BlogsQueryRepo,
@@ -172,7 +167,6 @@ const commentsUseCases = [
     UsersQueryRepo,
     DeviceSessionRepo,
     DeviceSessionQueryRepo,
-    BlockIpsRepo,
     PostsRepo,
     PostsQueryRepo,
     CommentsRepo,
