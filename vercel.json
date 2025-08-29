@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "techorda-back-end",
+    "name": "techorda-social-network-back-end",
     "builds": [
       {
         "src": "src/main.ts",
