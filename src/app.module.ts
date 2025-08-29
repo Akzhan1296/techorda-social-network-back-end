@@ -130,6 +130,7 @@ const commentsUseCases = [
         }
 
         if (env === "DEV") {
+          console.log(555)
           console.log(configService.get("remoteDB"));
           return configService.get("remoteDB");
         }
