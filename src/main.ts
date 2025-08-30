@@ -4,13 +4,19 @@ import cookieParser from "cookie-parser";
 import { BadRequestException, ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
 import { HttpExceptionFilter } from "./exception.filter";
-
+import cors from "cors"
 const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.enableCors();
+  app.use(
+    cors({
+      origin: "https://techorda-social-network-frontend.vercel.app",
+      credentials: true,
+    })
+  );
   app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
@@ -32,7 +38,7 @@ async function bootstrap() {
 
         throw new BadRequestException(errorsForProperty);
       },
-    }),
+    })
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
