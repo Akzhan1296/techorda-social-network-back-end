@@ -14,6 +14,7 @@ export type BlogViewModel = {
   description: string;
   isMembership: boolean;
   isBanned?: boolean;
+  userId?: string;
 };
 
 export type UpdateBlogDTO = Pick<

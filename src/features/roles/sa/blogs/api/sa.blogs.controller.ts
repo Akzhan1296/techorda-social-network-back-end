@@ -80,6 +80,7 @@ export class SABlogsController {
         name: blogInputModel.name,
         description: blogInputModel.description,
         websiteUrl: blogInputModel.websiteUrl,
+        userId: blogInputModel.userId,
       })
     );
 

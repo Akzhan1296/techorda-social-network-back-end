@@ -20,7 +20,7 @@ export class BlogsQueryRepo {
       .getOne();
 
     if (builder) {
-      const { name, createdAt, description, id, isMembership, websiteUrl } =
+      const { name, createdAt, description, id, isMembership, websiteUrl, userId } =
         builder;
       resultView = {
         name,
@@ -29,6 +29,7 @@ export class BlogsQueryRepo {
         createdAt,
         description,
         isMembership,
+        userId,
       };
     }
 

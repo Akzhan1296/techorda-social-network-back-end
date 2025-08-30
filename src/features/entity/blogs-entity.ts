@@ -21,6 +21,9 @@ export class Blog {
   @Column()
   createdAt: Date;
 
-  @OneToMany(() => Post, (p) => p.blog)
+  @Column({ nullable: true })
+  userId: string;
+
+  @OneToMany(() => Post, (p) => p.blog, { cascade: true, onDelete: 'CASCADE' })
   posts: Post[];
 }

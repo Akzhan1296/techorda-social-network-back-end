@@ -33,12 +33,12 @@ export class Post {
   @Column()
   blogId: string;
 
-  @OneToMany(() => PostLike, (p) => p.post)
+  @OneToMany(() => PostLike, (p) => p.post, { cascade: true, onDelete: 'CASCADE' })
   postLikes: PostLike[];
 
-  @OneToMany(() => Comment, (c) => c.post)
+  @OneToMany(() => Comment, (c) => c.post, { cascade: true, onDelete: 'CASCADE' })
   comments: Comment[];
 
-  @OneToMany(() => CommentLike, (c) => c.post)
+  @OneToMany(() => CommentLike, (c) => c.post, { cascade: true, onDelete: 'CASCADE' })
   commentLikes: CommentLike[];
 }

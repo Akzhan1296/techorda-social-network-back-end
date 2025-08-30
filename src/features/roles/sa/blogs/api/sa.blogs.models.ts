@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsNotEmpty, Matches, MaxLength } from "class-validator";
+import { IsNotEmpty, Matches, MaxLength, IsOptional, IsString } from "class-validator";
 import { PageSizeDTO } from "../../../../../common/types";
 
 export class CreateBlogInputModelType {
@@ -12,6 +12,9 @@ export class CreateBlogInputModelType {
   websiteUrl: string;
   @MaxLength(500)
   description: string;
+  @IsOptional()
+  @IsString()
+  userId?: string;
 }
 
 export class CreatePostInputType {

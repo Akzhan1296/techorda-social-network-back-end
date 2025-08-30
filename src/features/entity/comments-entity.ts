@@ -23,18 +23,18 @@ export class Comment {
   @Column()
   createdAt: Date;
 
-  @ManyToOne(() => Post)
+  @ManyToOne(() => Post, { onDelete: 'CASCADE' })
   post: Post;
 
   @Column()
   postId: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
   user: User;
 
   @Column()
   userId: string;
 
-  @OneToMany(() => CommentLike, (c) => c.comment)
+  @OneToMany(() => CommentLike, (c) => c.comment, { cascade: true, onDelete: 'CASCADE' })
   commentLikes: CommentLike[];
 }

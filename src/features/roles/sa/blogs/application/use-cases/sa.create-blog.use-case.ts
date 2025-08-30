@@ -14,7 +14,7 @@ export class CreateBlogBySAUseCase
   constructor(private readonly blogsRepo: BlogsRepo) {}
 
   async execute(command: CreateBlogBySACommand): Promise<ResultCreateBlogDTO> {
-    const { description, websiteUrl, name } = command.createBlogDTO;
+    const { description, websiteUrl, name, userId } = command.createBlogDTO;
 
     const result: ResultCreateBlogDTO = {
       isBlogCreated: false,
@@ -28,6 +28,9 @@ export class CreateBlogBySAUseCase
       newBlog.description = description;
       newBlog.createdAt = new Date();
       newBlog.isMembership = false;
+      if (userId) {
+        newBlog.userId = userId;
+      }
 
       const savedBlog = await this.blogsRepo.saveBlog(newBlog);
 

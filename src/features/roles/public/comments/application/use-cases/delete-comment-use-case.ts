@@ -1,6 +1,8 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { DeleteCommentDTO, DeleteCommentResult } from "../comments.dto";
 import { CommentsRepo } from "../../../../../infrstructura/comments/comments.adapter";
+import { InjectDataSource } from "@nestjs/typeorm";
+import { DataSource } from "typeorm";
 
 export class DeleteCommentCommand {
   constructor(public deleteCommentDTO: DeleteCommentDTO) {}
@@ -10,7 +12,10 @@ export class DeleteCommentCommand {
 export class DeleteCommentUseCase
   implements ICommandHandler<DeleteCommentCommand>
 {
-  constructor(private commentsRepo: CommentsRepo) {}
+  constructor(
+    private commentsRepo: CommentsRepo,
+    @InjectDataSource() private dataSource: DataSource,
+  ) {}
 
   async execute(command: DeleteCommentCommand) {
     const { commentId, userId } = command.deleteCommentDTO;
@@ -30,27 +35,23 @@ export class DeleteCommentUseCase
       return result;
     }
 
-    const isAnyCommentLikesData =
-      await this.commentsRepo.isAnyCommentLikesData(commentId);
-
-    if (isAnyCommentLikesData) {
-      try {
-        await this.commentsRepo.deleteCommentLikeEntities(commentId);
-      } catch (err) {
-        throw new Error(
-          `Something went wrong with deleting comments likes entity ${err}`,
-        );
-      }
-    }
-
     try {
-      const commentDeleteResult =
-        await this.commentsRepo.deleteComment(commentData);
+      // Используем транзакцию для безопасного удаления всех связанных записей
+      await this.dataSource.transaction(async (manager) => {
+        // 1. Удаляем лайки комментария
+        await manager.query(
+          `DELETE FROM "comment_like" WHERE "commentId" = $1`,
+          [commentId]
+        );
 
-      result.isCommentDeleted = !!commentDeleteResult.affected;
+        // 2. Удаляем сам комментарий
+        await manager.query(`DELETE FROM "comment" WHERE "id" = $1`, [commentId]);
+      });
+
+      result.isCommentDeleted = true;
     } catch (err) {
       throw new Error(
-        `Something went wrong with deleting comment entity ${err}`
+        `Something went wrong with deleting comment entity: ${err}`
       );
     }
 

@@ -1,6 +1,7 @@
 import {
   Controller,
   Delete,
+  Post,
   HttpCode,
   HttpStatus,
   Req,
@@ -22,17 +23,19 @@ export class DeleteAllTestingData {
   async deleteUserTableData() {
     await this.dataSource.query(`DELETE FROM public."user"`);
   }
+
   async deleteIpsTableData() {
     await this.dataSource.query(`DELETE FROM public."ips"`);
   }
 
-
   async deleteCommentsTableData() {
     await this.dataSource.query(`DELETE FROM public."comment"`);
   }
+  
   async deleteCommentLikesTableData() {
     await this.dataSource.query(`DELETE FROM public."comment_like"`);
   }
+  
   async deletePostsLikesTableData() {
     await this.dataSource.query(`DELETE FROM public."post_like"`);
   }
@@ -43,6 +46,31 @@ export class DeleteAllTestingData {
 
   async deleteBlogsTableData() {
     await this.dataSource.query(`DELETE FROM public."blog"`);
+  }
+
+  async addUserIdColumnToBlog() {
+    try {
+      // Проверяем, существует ли колонка
+      const result = await this.dataSource.query(`
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name='blog' AND column_name='userId'
+      `);
+      
+      if (result.length === 0) {
+        // Добавляем колонку, если она не существует
+        await this.dataSource.query(`
+          ALTER TABLE public."blog" 
+          ADD COLUMN "userId" character varying
+        `);
+        console.log('Successfully added userId column to blog table');
+      } else {
+        console.log('userId column already exists in blog table');
+      }
+    } catch (error) {
+      console.error('Error adding userId column:', error);
+      throw error;
+    }
   }
 }
 
@@ -65,5 +93,16 @@ export class DeleteDataController {
     await this.deleteRepository.deleteUserTableData();
 
     return response.status(HttpStatus.NO_CONTENT).send();
+  }
+
+  @Post("/migrate-blog-userId")
+  @HttpCode(HttpStatus.OK)
+  async migrateBlogUserId(@Req() request: Request, @Res() response: Response) {
+    try {
+      await this.deleteRepository.addUserIdColumnToBlog();
+      return response.status(HttpStatus.OK).json({ message: "Migration completed successfully" });
+    } catch (error) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    }
   }
 }
