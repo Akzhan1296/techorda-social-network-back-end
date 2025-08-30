@@ -13,7 +13,8 @@ async function bootstrap() {
   app.enableCors();
   app.use(
     cors({
-      origin: "https://techorda-social-network-frontend.vercel.app",
+      origin: "techorda-social-network-front-end.vercel.app",
+      
       credentials: true,
     })
   );
