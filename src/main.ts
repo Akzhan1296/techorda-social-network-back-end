@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  app.enableCors();
+  // app.enableCors();
   app.use(
     cors({
       origin: "https://techorda-social-network-front-end.vercel.app",
